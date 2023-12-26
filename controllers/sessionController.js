@@ -1,7 +1,6 @@
 // sessionController.js
 
 const sha = require("sha256");
-
 // 사용자 세션 확인
 const checkUserSession = (req, res) => {
   if (req.session.user) {
@@ -37,9 +36,10 @@ const loginUser = async (req, res, mydb) => {
 };
 
 // 사용자 로그아웃 함수
-const logoutUser = (req, res) => {
+const logoutUser = async (req, res) => {
   console.log("로그아웃");
   req.session.destroy();
+
   res.json({ user: null });
 };
 

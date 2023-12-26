@@ -1,4 +1,3 @@
-// postControllers.js
 // Post 모델
 const Post = require("../models/postModel");
 
@@ -8,6 +7,11 @@ exports.getPosts = async (req, res) => {
     const perPage = 10;
     const skip = (page - 1) * perPage;
 
+    // .find() 문서 탐색
+    // .sort() 정렬. 매개변수 없으면 기본 정렬. -1 역순 정렬
+    // .skip() 건너 뛸 검색 수. 매개변수 없으면 건너띄지 않음
+    // .limit() 반환 문서 최대 값
+    // .lean() mongoose 문서 -> js 객체 변환
     const posts = await Post.find()
       .sort({ wdate: -1 })
       .skip(skip)
@@ -33,7 +37,7 @@ exports.getPostTotal = async (req, res) => {
   }
 };
 
-exports.getPostWrite = async (req, res) => {
+exports.getPostwrite = async (req, res) => {
   const { title, content, writer, wdate } = req.body;
   try {
     const newPost = new Post({ title, content, writer, wdate });

@@ -3,19 +3,24 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+// const sha = require("sha256");
 const cors = require("cors");
 const session = require("express-session");
 const path = require("path");
-const sha = require("sha256");
+
+// Post 모델
+const Post = require("./models/postModel");
 
 // controllers
 const sessionController = require("./controllers/sessionController");
 const postControllers = require("./controllers/postControllers");
-
+// 세션 설정(주로 앞쪽에 작성)
 app.use(
   session({
     secret: process.env.SESSION_NO,
+
     resave: false,
+    // 세션을 사용하기 전까지 세션 식별자를 발급하지 않도록 함
     saveUninitialized: true,
   })
 );
@@ -26,6 +31,8 @@ app.use(express.json());
 const PORT = process.env.PORT || 8080;
 const URL = process.env.MONGODB_URL;
 
+// mongoDB 연결
+// dbName: "account" 실제 데이터 저장할 db명
 let mydb;
 mongoose
   .connect(URL, { dbName: "db1" })
@@ -77,10 +84,11 @@ app.get("/logout", sessionController.logoutUser);
 // 게시판
 // posts
 app.get("/posts", postControllers.getPosts);
+
 app.get("/posts/total", postControllers.getPostTotal);
 
 // 게시글 작성
-app.post("/posts/write", postControllers.getPostWrite);
+app.post("/posts/write", postControllers.getPostwrite);
 
 // 게시글 읽기
 app.get("/posts/read/:id", postControllers.getPostRead);
